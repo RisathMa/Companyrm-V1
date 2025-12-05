@@ -1,16 +1,31 @@
 
 
 import React, { useState } from 'react';
-import { Section } from './components';
-import { PRODUCTS } from './data';
+import { Section, Button } from './components';
+import { PRODUCTS, Page } from './data';
 
-export const ProductsPage = () => {
+interface ProductsPageProps {
+  isAuthenticated: boolean;
+  setPage: (p: Page) => void;
+}
+
+export const ProductsPage = ({ isAuthenticated, setPage }: ProductsPageProps) => {
   const [filter, setFilter] = useState("All");
   const categories = ["All", "AI Tools", "Security", "Students"];
 
   const filteredProducts = filter === "All" 
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === filter);
+
+  const handleLaunchApp = (e: React.MouseEvent, url: string) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      window.open(url, '_blank');
+    } else {
+      // User is not authenticated, redirect to auth page
+      setPage('auth');
+    }
+  };
 
   return (
     <div className="pt-24 min-h-screen bg-light">
@@ -60,11 +75,14 @@ export const ProductsPage = () => {
               <div className="mt-6 pt-6 border-t border-gray-50">
                 <a 
                   href={product.url}
-                  target="_blank"
-                  rel="noopener noreferrer" 
-                  className="w-full py-3 rounded-lg bg-gray-50 text-dark font-semibold text-sm hover:bg-dark hover:text-white transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg"
+                  onClick={(e) => handleLaunchApp(e, product.url)}
+                  className="w-full py-3 rounded-lg bg-gray-50 text-dark font-semibold text-sm hover:bg-dark hover:text-white transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg cursor-pointer select-none"
                 >
-                  Launch App <i className="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                  {isAuthenticated ? (
+                    <>Launch App <i className="fa-solid fa-arrow-up-right-from-square text-xs"></i></>
+                  ) : (
+                    <>Sign In to Launch <i className="fa-solid fa-lock text-xs"></i></>
+                  )}
                 </a>
               </div>
             </div>
