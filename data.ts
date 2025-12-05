@@ -1,4 +1,5 @@
 
+
 export type Page = 'home' | 'features' | 'products' | 'security' | 'about' | 'auth';
 
 export interface Product {
@@ -9,6 +10,7 @@ export interface Product {
   badge?: string;
   badgeColor?: string;
   icon: string;
+  url: string;
 }
 
 export const PRODUCTS: Product[] = [
@@ -19,7 +21,8 @@ export const PRODUCTS: Product[] = [
     description: "Automatically detects and blurs faces in videos using advanced machine learning.",
     badge: "Most Popular",
     badgeColor: "bg-gradient-primary",
-    icon: "fa-video"
+    icon: "fa-video",
+    url: "https://faceblur.companyrm.lk"
   },
   {
     id: 2,
@@ -28,7 +31,8 @@ export const PRODUCTS: Product[] = [
     description: "Military-grade encryption for your most sensitive enterprise documents.",
     badge: "New v2.0",
     badgeColor: "bg-success",
-    icon: "fa-shield-halved"
+    icon: "fa-shield-halved",
+    url: "https://vault.companyrm.lk"
   },
   {
     id: 3,
@@ -37,14 +41,16 @@ export const PRODUCTS: Product[] = [
     description: "Research faster and organize citations with our academic AI companion.",
     badge: "Free Tier",
     badgeColor: "bg-blue-400",
-    icon: "fa-graduation-cap"
+    icon: "fa-graduation-cap",
+    url: "https://student.companyrm.lk"
   },
   {
     id: 4,
     title: "Auto-Translator Pro",
     category: "AI Tools",
     description: "Real-time voice and text translation for over 50+ languages.",
-    icon: "fa-language"
+    icon: "fa-language",
+    url: "https://translator.companyrm.lk"
   },
   {
     id: 5,
@@ -53,14 +59,16 @@ export const PRODUCTS: Product[] = [
     description: "Integrate GDPR-compliant data masking directly into your applications.",
     badge: "Enterprise",
     badgeColor: "bg-dark",
-    icon: "fa-code"
+    icon: "fa-code",
+    url: "https://api.companyrm.lk"
   },
   {
     id: 6,
     title: "Exam Prep Gen",
     category: "Students",
     description: "Generate practice quizzes from your lecture notes instantly.",
-    icon: "fa-book-open"
+    icon: "fa-book-open",
+    url: "https://examprep.companyrm.lk"
   }
 ];
 

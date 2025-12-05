@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { Section } from './components';
 import { PRODUCTS } from './data';
@@ -57,9 +58,14 @@ export const ProductsPage = () => {
               </div>
 
               <div className="mt-6 pt-6 border-t border-gray-50">
-                <button className="w-full py-3 rounded-lg bg-gray-50 text-dark font-semibold text-sm hover:bg-dark hover:text-white transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg">
+                <a 
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="w-full py-3 rounded-lg bg-gray-50 text-dark font-semibold text-sm hover:bg-dark hover:text-white transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg"
+                >
                   Launch App <i className="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </button>
+                </a>
               </div>
             </div>
           ))}
