@@ -1,9 +1,17 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Page } from './data';
 import { Button, Logo } from './components';
 
-export const Navbar = ({ activePage, setPage }: { activePage: Page, setPage: (p: Page) => void }) => {
+interface NavbarProps {
+  activePage: Page;
+  setPage: (p: Page) => void;
+  isAuthenticated?: boolean;
+  onLogout?: () => void;
+}
+
+export const Navbar = ({ activePage, setPage, isAuthenticated = false, onLogout }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -42,13 +50,29 @@ export const Navbar = ({ activePage, setPage }: { activePage: Page, setPage: (p:
               {item.label}
             </button>
           ))}
-          <Button 
-            variant="primary" 
-            className="!py-2.5 !px-6 !text-sm !rounded-lg"
-            onClick={() => setPage('auth')}
-          >
-            Sign In
-          </Button>
+          
+          {isAuthenticated ? (
+            <div className="flex items-center gap-4">
+               <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center text-white text-xs font-bold border-2 border-white shadow-sm">
+                 JD
+               </div>
+               <Button 
+                variant="outline"
+                className="!py-2 !px-4 !text-xs !text-gray-600 !border-gray-300 hover:!bg-gray-100 hover:!text-error"
+                onClick={onLogout}
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <Button 
+              variant="primary" 
+              className="!py-2.5 !px-6 !text-sm !rounded-lg"
+              onClick={() => setPage('auth')}
+            >
+              Sign In
+            </Button>
+          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -70,7 +94,12 @@ export const Navbar = ({ activePage, setPage }: { activePage: Page, setPage: (p:
               {item.label}
             </button>
           ))}
-          <Button variant="primary" className="w-full mt-4" onClick={() => { setPage('auth'); setIsOpen(false); }}>Sign In</Button>
+          
+          {isAuthenticated ? (
+             <Button variant="outline" className="w-full mt-4 border-error text-error" onClick={() => { onLogout && onLogout(); setIsOpen(false); }}>Sign Out</Button>
+          ) : (
+             <Button variant="primary" className="w-full mt-4" onClick={() => { setPage('auth'); setIsOpen(false); }}>Sign In</Button>
+          )}
         </div>
       )}
     </nav>

@@ -2,9 +2,64 @@
 import React, { useState } from 'react';
 import { Button } from './components';
 import { Page } from './data';
+import { auth, googleProvider } from './firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
 
-export const AuthPage = ({ setPage }: { setPage: (p: Page) => void }) => {
+interface AuthPageProps {
+  setPage: (p: Page) => void;
+  onLogin: () => void;
+}
+
+export const AuthPage = ({ setPage, onLogin }: AuthPageProps) => {
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  // Form State
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      if (authMode === 'signup') {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        if (name) {
+          await updateProfile(userCredential.user, { displayName: name });
+        }
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+      onLogin(); // Trigger login success in parent
+    } catch (err: any) {
+      console.error(err);
+      let msg = "An error occurred during authentication.";
+      if (err.code === 'auth/invalid-credential') msg = "Invalid email or password.";
+      if (err.code === 'auth/email-already-in-use') msg = "This email is already registered.";
+      if (err.code === 'auth/weak-password') msg = "Password should be at least 6 characters.";
+      setError(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      await signInWithPopup(auth, googleProvider);
+      onLogin();
+    } catch (err: any) {
+      console.error(err);
+      setError("Failed to sign in with Google. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-light flex items-center justify-center p-4 pt-20">
@@ -46,13 +101,13 @@ export const AuthPage = ({ setPage }: { setPage: (p: Page) => void }) => {
           <div className="max-w-md mx-auto w-full">
             <div className="flex gap-4 mb-8 p-1 bg-gray-100 rounded-xl">
               <button 
-                onClick={() => setAuthMode('signin')}
+                onClick={() => { setAuthMode('signin'); setError(''); }}
                 className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${authMode === 'signin' ? 'bg-white shadow-sm text-dark' : 'text-gray-500 hover:text-dark'}`}
               >
                 Sign In
               </button>
               <button 
-                onClick={() => setAuthMode('signup')}
+                onClick={() => { setAuthMode('signup'); setError(''); }}
                 className={`flex-1 py-3 rounded-lg text-sm font-bold transition-all ${authMode === 'signup' ? 'bg-white shadow-sm text-dark' : 'text-gray-500 hover:text-dark'}`}
               >
                 Sign Up
@@ -60,12 +115,24 @@ export const AuthPage = ({ setPage }: { setPage: (p: Page) => void }) => {
             </div>
 
             <h3 className="text-2xl font-bold mb-2 text-dark">{authMode === 'signin' ? 'Sign in to Account' : 'Create an Account'}</h3>
-            <p className="text-gray-500 mb-8 text-sm">
+            <p className="text-gray-500 mb-6 text-sm">
               {authMode === 'signin' ? 'Enter your email and password to continue.' : 'Get started with a free account today.'}
             </p>
 
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-100 text-error text-sm rounded-xl flex items-center gap-2 animate-fade-in-up">
+                <i className="fa-solid fa-circle-exclamation"></i>
+                {error}
+              </div>
+            )}
+
             {/* Social Login */}
-            <button className="w-full py-3 px-4 border border-gray-200 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors mb-4 group">
+            <button 
+              type="button" 
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+              className="w-full py-3 px-4 border border-gray-200 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors mb-4 group disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
               <span className="text-sm font-semibold text-gray-700 group-hover:text-dark">
                 {authMode === 'signin' ? 'Sign in with Google' : 'Sign up with Google'}
@@ -77,22 +144,43 @@ export const AuthPage = ({ setPage }: { setPage: (p: Page) => void }) => {
               <span className="relative bg-white px-4 text-xs text-gray-400 uppercase tracking-widest">Or continue with</span>
             </div>
 
-            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert('Auth integration coming soon! (Firebase)'); }}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               {authMode === 'signup' && (
                 <div>
                   <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Full Name</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="John Doe" />
+                  <input 
+                    type="text" 
+                    required 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
+                    placeholder="John Doe" 
+                  />
                 </div>
               )}
               
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Email Address</label>
-                <input type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="name@company.com" />
+                <input 
+                  type="email" 
+                  required 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
+                  placeholder="name@company.com" 
+                />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-2">Password</label>
-                <input type="password" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="••••••••" />
+                <input 
+                  type="password" 
+                  required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
+                  placeholder="••••••••" 
+                />
               </div>
 
               {authMode === 'signin' && (
@@ -105,8 +193,12 @@ export const AuthPage = ({ setPage }: { setPage: (p: Page) => void }) => {
                 </div>
               )}
 
-              <Button type="submit" className="w-full mt-6 shadow-xl">
-                {authMode === 'signin' ? 'Sign In' : 'Create Account'}
+              <Button type="submit" className="w-full mt-6 shadow-xl" disabled={isLoading}>
+                {isLoading ? (
+                  <><i className="fa-solid fa-circle-notch fa-spin"></i> Processing...</>
+                ) : (
+                  authMode === 'signin' ? 'Sign In' : 'Create Account'
+                )}
               </Button>
             </form>
 
