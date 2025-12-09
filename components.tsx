@@ -27,7 +27,7 @@ export const Logo = ({ className = "w-10 h-10" }) => (
   <div className="relative group">
     <div className="absolute inset-0 bg-primary/20 blur-md rounded-full group-hover:bg-primary/40 transition-colors"></div>
     <img
-      src="Logo-modified (1).png"
+      src="https://i.ibb.co/HDkvPN3d/Logo-modified-1.png"
       alt="RM Solutions Logo"
       className={`relative ${className} rounded-full object-cover shadow-md border-2 border-white`}
     />
