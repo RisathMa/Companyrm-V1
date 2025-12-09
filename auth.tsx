@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './components';
 import { Page } from './data';
 import { auth, googleProvider } from './firebase';
@@ -10,7 +10,8 @@ import {
   updateProfile,
   sendEmailVerification,
   sendPasswordResetEmail,
-  signOut
+  signOut,
+  applyActionCode
 } from 'firebase/auth';
 
 interface AuthPageProps {
@@ -23,6 +24,40 @@ export const AuthPage = ({ setPage, onLogin }: AuthPageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Handle email verification link on page load
+  useEffect(() => {
+    const handleEmailVerification = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const mode = urlParams.get('mode');
+      const oobCode = urlParams.get('oobCode');
+
+      if (mode === 'verifyEmail' && oobCode) {
+        setIsLoading(true);
+        try {
+          // Apply the email verification code
+          await applyActionCode(auth, oobCode);
+          setSuccess('Email verified successfully! You can now sign in.');
+          setAuthMode('signin');
+          // Clean up URL parameters
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (err: any) {
+          console.error('Email verification error:', err);
+          let msg = 'Failed to verify email. The link may be expired or invalid.';
+          if (err.code === 'auth/invalid-action-code') {
+            msg = 'Verification link is invalid or has already been used.';
+          } else if (err.code === 'auth/expired-action-code') {
+            msg = 'Verification link has expired. Please request a new one.';
+          }
+          setError(msg);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    handleEmailVerification();
+  }, []);
 
   // Form State
   const [email, setEmail] = useState('');
