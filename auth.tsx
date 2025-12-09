@@ -67,6 +67,9 @@ export const AuthPage = ({ setPage, onLogin }: AuthPageProps) => {
       } else if (authMode === 'signin') {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
+        // Reload user to get the latest verification status from Firebase
+        await userCredential.user.reload();
+
         if (!userCredential.user.emailVerified) {
           // Keep them logged in Firebase-wise to allow resending email, but don't grant app access (cookie)
           // We don't call onLogin() here.
