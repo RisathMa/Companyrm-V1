@@ -42,7 +42,7 @@ export const PRODUCTS: Product[] = [
     badge: "Free Tier",
     badgeColor: "bg-blue-400",
     icon: "fa-graduation-cap",
-    url: "https://student.companyrm.lk"
+    url: "https://studentai.companyrm.lk"
   },
   {
     id: 4,
