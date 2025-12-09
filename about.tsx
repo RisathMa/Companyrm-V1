@@ -14,11 +14,11 @@ export const AboutPage = () => (
           </p>
           <div className="flex gap-8">
             <div>
-              <div className="text-3xl font-bold text-primary">50k+</div>
+              <div className="text-3xl font-bold text-primary">50k</div>
               <div className="text-sm text-gray-500">Active Users</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary">15+</div>
+              <div className="text-3xl font-bold text-primary">5</div>
               <div className="text-sm text-gray-500">AI Products</div>
             </div>
             <div>
@@ -31,7 +31,7 @@ export const AboutPage = () => (
           <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Team working" className="rounded-3xl shadow-level-3" />
           <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-level-2 max-w-xs">
             <p className="font-heading font-bold text-dark mb-2">"Innovation is in our DNA."</p>
-            <p className="text-sm text-gray-500">- Arjun Perera, CEO</p>
+            <p className="text-sm text-gray-500">- Risath Manvidu, CEO</p>
           </div>
         </div>
       </div>
