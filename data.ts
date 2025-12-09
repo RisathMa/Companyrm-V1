@@ -97,10 +97,7 @@ export const TESTIMONIALS = [
 ];
 
 export const TEAM = [
-  { name: "Arjun Perera", role: "Founder & CEO", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun" },
-  { name: "Nimali Fernando", role: "Head of AI", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nimali" },
-  { name: "Kevin Dias", role: "Lead Security Engineer", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kevin" },
-  { name: "Sarah Khan", role: "Product Manager", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
+  { name: "Risath Manvidu", role: "Founder & CEO", img: "https://i.ibb.co/5xJZ3cKb/581731373-808034715375321-5235741489036203174-n.jpg" },
 ];
 
 // Cookie Utils
@@ -111,13 +108,13 @@ export const setCookie = (name: string, value: string, days: number) => {
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     expires = "; expires=" + date.toUTCString();
   }
-  
+
   // Set domain to .companyrm.lk to share cookies across subdomains
   let domain = "";
   if (window.location.hostname.endsWith("companyrm.lk")) {
     domain = "; domain=.companyrm.lk";
   }
-  
+
   document.cookie = name + "=" + (value || "") + expires + domain + "; path=/";
 }
 
