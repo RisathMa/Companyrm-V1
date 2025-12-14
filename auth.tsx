@@ -174,7 +174,7 @@ export const AuthPage = ({ setPage, onLogin }: AuthPageProps) => {
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-8 cursor-pointer" onClick={() => setPage('home')}>
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                <img src="https://placehold.co/100x100/224CFF/FFFFFF.png?text=RM" className="w-10 h-10 rounded-full" alt="Logo" />
+                <img src="https://i.ibb.co/HDkvPN3d/Logo-modified-1.png" className="w-10 h-10 rounded-full" alt="Logo" />
               </div>
               <span className="font-heading font-bold text-2xl">RM Solutions</span>
             </div>
