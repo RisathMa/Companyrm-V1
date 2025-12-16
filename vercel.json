@@ -7,6 +7,28 @@
     {
       "source": "/robots.txt",
       "destination": "/robots.txt"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/indexRMFileConverter.html",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/indexRMSecure(.*).html",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/indexRMText(.*).html",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/index\\(Products\\).html",
+      "destination": "/products",
+      "permanent": true
     },
     {
       "source": "/(.*)",
