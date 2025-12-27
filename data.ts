@@ -68,7 +68,7 @@ export const PRODUCTS: Product[] = [
     category: "Students",
     description: "Generate practice quizzes from your lecture notes instantly.",
     icon: "fa-book-open",
-    url: "https://examprep.companyrm.lk"
+    url: "http://edupub.companyrm.lk/"
   }
 ];
 
