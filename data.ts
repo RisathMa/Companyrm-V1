@@ -1,6 +1,6 @@
 
 
-export type Page = 'home' | 'features' | 'products' | 'security' | 'about' | 'auth';
+export type Page = 'home' | 'features' | 'products' | 'security' | 'about' | 'auth' | 'privacy-policy' | 'terms-of-service' | 'cookie-policy' | 'blog' | 'faq';
 
 export interface Product {
   id: number;

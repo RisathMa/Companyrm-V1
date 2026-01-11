@@ -14,6 +14,9 @@ import { ProductsPage } from './products';
 import { SecurityPage } from './security';
 import { AboutPage } from './about';
 import { AuthPage } from './auth';
+import { PrivacyPolicy, TermsOfService, CookiePolicy } from './LegalPages';
+import { FAQPage } from './FAQPage';
+import { BlogPage } from './BlogPage';
 
 const App = () => {
   const [activePage, setActivePage] = useState<Page>('home');
@@ -65,6 +68,11 @@ const App = () => {
       case 'security': return <SecurityPage />;
       case 'about': return <AboutPage />;
       case 'auth': return <AuthPage setPage={setActivePage} onLogin={handleLogin} />;
+      case 'privacy-policy': return <PrivacyPolicy />;
+      case 'terms-of-service': return <TermsOfService />;
+      case 'cookie-policy': return <CookiePolicy />;
+      case 'blog': return <BlogPage />;
+      case 'faq': return <FAQPage />;
       default: return <HomePage setPage={setActivePage} />;
     }
   };

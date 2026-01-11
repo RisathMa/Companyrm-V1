@@ -1,24 +1,27 @@
 User-agent: *
 Allow: /
+
+# Block sensitive directories only
 Disallow: /api/
 Disallow: /admin/
 Disallow: /*.json$
 
-# Block old HTML files that no longer exist
-Disallow: /indexRMFileConverter.html
-Disallow: /indexRMSecure*
-Disallow: /indexRMText*
-Disallow: /index(Products).html
-
 # Sitemap
 Sitemap: https://www.companyrm.lk/sitemap.xml
 
+# Crawl delay for general bots
 Crawl-delay: 1
 
+# Special rules for Googlebot
 User-agent: Googlebot
 Allow: /
-Disallow: /indexRMFileConverter.html
-Disallow: /indexRMSecure*
-Disallow: /indexRMText*
-Disallow: /index(Products).html
 Crawl-delay: 0
+
+# Allow other major search engines
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
